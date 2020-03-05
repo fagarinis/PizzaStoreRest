@@ -8,10 +8,13 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import it.pizzastore.model.Ruolo;
 import it.pizzastore.model.StatoUtente;
 import it.pizzastore.model.Utente;
 
+@JsonIgnoreProperties({ "idRuoli" })
 public class UtenteDTO {
 
 	private Long id;
@@ -21,8 +24,11 @@ public class UtenteDTO {
 	private String password;
 	private Date dataRegistrazione;
 	private StatoUtente stato = StatoUtente.CREATO;
+	
+	@JsonIgnoreProperties(value= {"utenti"})
 	private Set<Ruolo> ruoli = new HashSet<>();
-
+	
+	
 	private List<String> idRuoli = new ArrayList<>();
 
 	public UtenteDTO() {

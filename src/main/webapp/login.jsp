@@ -23,7 +23,7 @@
 		</div>
 	    <form class="form-signin" action="LoginServlet" method="post">
 	<!--       <img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72"> -->
-	      <h1 class="h3 mb-3 font-weight-normal">Accedi al Sistema PizzaStore</h1>
+	      <h1 class="h3 mb-3 font-weight-normal">Accedi al Sistema PizzaStoreRest</h1>
 	      <label for="inputUsername" class="sr-only">Username</label>
 	      <input type="text" name="inputUsername" id="inputUsername" class="form-control" placeholder="Login" required autofocus>
 	      <label for="inputPassword" class="sr-only">Password</label>
