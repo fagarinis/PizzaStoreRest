@@ -12,4 +12,6 @@ public interface IngredienteRepository extends CrudRepository<Ingrediente, Long>
 
 	@Query("select distinct i from Ingrediente i join fetch i.pizze p where p.id = ?1")
 	Set<Ingrediente> findByIdPizza(Long idPizza);
+	
+	Ingrediente findById(Long id);
 }

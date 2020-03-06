@@ -7,4 +7,5 @@ import it.pizzastore.model.Ruolo;
 
 public interface RuoloRepository extends CrudRepository<Ruolo, Long>, QueryByExampleExecutor<Ruolo>{
 
+	Ruolo findById(Long id);
 }

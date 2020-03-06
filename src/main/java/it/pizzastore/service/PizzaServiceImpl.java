@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -21,6 +20,7 @@ import it.pizzastore.model.Ingrediente;
 import it.pizzastore.model.Pizza;
 import it.pizzastore.repository.IngredienteRepository;
 import it.pizzastore.repository.PizzaRepository;
+import it.pizzastore.web.dto.StringUtils;
 
 @Service
 public class PizzaServiceImpl implements PizzaService {
@@ -51,7 +51,7 @@ public class PizzaServiceImpl implements PizzaService {
 	@Transactional(readOnly = true)
 	@Override
 	public Pizza caricaSingolo(Long id) {
-		return pizzaRepository.findById(id).orElse(null);
+		return pizzaRepository.findById(id);
 	}
 
 	@Transactional
@@ -90,17 +90,17 @@ public class PizzaServiceImpl implements PizzaService {
 	@Override
 	public void aggiornaConIngredienti(Pizza pizzaInstance) {
 		
-		List<Long> idIngredienti = new ArrayList<>();
-		
-		for (Ingrediente ingrediente : pizzaInstance.getIngredienti()) {
-			idIngredienti.add(ingrediente.getId());
-		}
-
-		List<Ingrediente> ingredientiPersistList = (List<Ingrediente>) ingredienteRepository.findAllById(idIngredienti);
-		Set<Ingrediente> ingredientiPersist = ingredientiPersistList.stream().collect(Collectors.toSet());
-		
-		pizzaInstance.setIngredienti(ingredientiPersist);
-		this.aggiorna(pizzaInstance);
+//		List<Long> idIngredienti = new ArrayList<>();
+//		
+//		for (Ingrediente ingrediente : pizzaInstance.getIngredienti()) {
+//			idIngredienti.add(ingrediente.getId());
+//		}
+//
+//		List<Ingrediente> ingredientiPersistList = (List<Ingrediente>) ingredienteRepository.findAllById(idIngredienti);
+//		Set<Ingrediente> ingredientiPersist = ingredientiPersistList.stream().collect(Collectors.toSet());
+//		
+//		pizzaInstance.setIngredienti(ingredientiPersist);
+//		this.aggiorna(pizzaInstance);
 
 	}
 
@@ -125,7 +125,7 @@ public class PizzaServiceImpl implements PizzaService {
 	@Transactional
 	@Override
 	public void disattiva(Pizza pizza) {
-		Pizza pizzaDaDisattivare = pizzaRepository.findById(pizza.getId()).orElse(null);
+		Pizza pizzaDaDisattivare = pizzaRepository.findById(pizza.getId());
 		if (pizzaDaDisattivare != null) {
 			pizzaDaDisattivare.setAttivo(false);
 		}
@@ -147,9 +147,9 @@ public class PizzaServiceImpl implements PizzaService {
 				+ " where p.id = p.id "
 				+ " and p.attivo = 1 ";
 
-		if (StringUtils.isNotEmpty(example.getCodice()))
+		if (StringUtils.isNotBlank(example.getCodice()))
 			query += " and p.codice like '%" + example.getCodice() + "%' ";
-		if (StringUtils.isNotEmpty(example.getDescrizione()))
+		if (StringUtils.isNotBlank(example.getDescrizione()))
 			query += " and p.descrizione like '%" + example.getDescrizione() + "%' ";
 		if (example.getPrezzoBase() != null)
 			query += " and p.prezzoBase = "+ example.getPrezzoBase() +" ";

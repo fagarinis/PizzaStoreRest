@@ -31,7 +31,7 @@ public class UtenteServiceImpl implements UtenteService {
 
 	@Transactional(readOnly = true)
 	public Utente caricaSingolo(Long id) {
-		return repository.findById(id).orElse(null);
+		return repository.findById(id);
 	}
 
 	@Transactional

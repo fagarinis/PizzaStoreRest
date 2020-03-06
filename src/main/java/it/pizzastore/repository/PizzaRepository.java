@@ -10,6 +10,8 @@ import it.pizzastore.model.Pizza;
 
 public interface PizzaRepository extends CrudRepository<Pizza, Long>, QueryByExampleExecutor<Pizza> {
 
+	Pizza findById(Long id);
+	
 	@Query("select p from Pizza p left join fetch p.ingredienti i where p.id = ?1")
 	Pizza findByIdWithIngredients(Long id);
 

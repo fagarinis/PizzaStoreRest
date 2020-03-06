@@ -9,7 +9,6 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import it.pizzastore.dto.UtenteDTO;
 import it.pizzastore.model.Utente;
 import it.pizzastore.service.UtenteService;
 
@@ -23,13 +22,12 @@ public class LoginResource {
 //	## Login:
 //	- POST /auth/login [anonymous]
 
-	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response eseguiLogin(UtenteDTO utenteDTOInput) {
-		Utente utenteLogin = UtenteDTO.buildModelFromDto(utenteDTOInput);
-		utenteService.eseguiAccesso(utenteLogin.getUsername(), utenteLogin.getPassword());
-		
-		return Response.status(200).entity(utenteLogin).build();
-	}
+//	@POST
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Response eseguiLogin(UtenteDTO utenteDTOInput) {
+//		Utente utenteLogin = UtenteDTO.buildModelFromDto(utenteDTOInput);
+//		utenteService.eseguiAccesso(utenteLogin.getUsername(), utenteLogin.getPassword());
+//		return Response.status(200).entity(utenteLogin).build();
+//	}
 
 }

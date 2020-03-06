@@ -24,7 +24,7 @@ public class RuoloServiceImpl implements RuoloService {
 	@Transactional(readOnly = true)
 	@Override
 	public Ruolo caricaSingolo(Long id) {
-		return ruoloRepository.findById(id).orElse(null);
+		return ruoloRepository.findById(id);
 	}
 
 	@Transactional

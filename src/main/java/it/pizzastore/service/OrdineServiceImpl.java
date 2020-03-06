@@ -7,7 +7,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -18,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import it.pizzastore.model.Ordine;
 import it.pizzastore.model.utils.IntegerUtils;
 import it.pizzastore.repository.OrdineRepository;
+import it.pizzastore.web.dto.StringUtils;
 
 @Service
 public class OrdineServiceImpl implements OrdineService {
@@ -43,7 +43,7 @@ public class OrdineServiceImpl implements OrdineService {
 	@Transactional(readOnly = true)
 	@Override
 	public Ordine caricaSingolo(Long id) {
-		return ordineRepository.findById(id).orElse(null);
+		return ordineRepository.findById(id);
 	}
 
 	@Transactional(readOnly = true)
@@ -105,7 +105,7 @@ public class OrdineServiceImpl implements OrdineService {
 	public List<Ordine> findByExampleOrderByData(Ordine example) {
 		String query = "select o from Ordine o where o.id = o.id ";
 
-		if (StringUtils.isNotEmpty(example.getCodice()))
+		if (StringUtils.isNotBlank(example.getCodice()))
 			query += " and o.codice like '%" + example.getCodice() + "%' ";
 		if (example.getCostoTotale() != null) {
 			if (IntegerUtils.isIntegerValue(example.getCostoTotale())) {

@@ -41,7 +41,7 @@ public class ClienteServiceImpl implements ClienteService {
 	@Transactional(readOnly = true)
 	@Override
 	public Cliente caricaSingolo(Long id) {
-		return clienteRepository.findById(id).orElse(null);
+		return clienteRepository.findById(id);
 	}
 
 	@Transactional
@@ -73,7 +73,7 @@ public class ClienteServiceImpl implements ClienteService {
 	@Transactional
 	@Override
 	public void disattiva(Cliente cliente) {
-		Cliente clienteDaDisattivare = clienteRepository.findById(cliente.getId()).orElse(null);
+		Cliente clienteDaDisattivare = clienteRepository.findById(cliente.getId());
 		if (clienteDaDisattivare != null) {
 			clienteDaDisattivare.setAttivo(false);
 		}

@@ -11,6 +11,8 @@ import it.pizzastore.model.Ordine;
 
 public interface OrdineRepository extends CrudRepository<Ordine, Long>, QueryByExampleExecutor<Ordine> {
 
+	Ordine findById(Long id);
+	
 	@Query("Select o from Ordine o ORDER BY data")
 	List<Ordine> findAllOrderByData();
 

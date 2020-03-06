@@ -7,4 +7,5 @@ import it.pizzastore.model.Cliente;
 
 public interface ClienteRepository extends CrudRepository<Cliente, Long>, QueryByExampleExecutor<Cliente> {
 
+	Cliente findById(Long id);
 }

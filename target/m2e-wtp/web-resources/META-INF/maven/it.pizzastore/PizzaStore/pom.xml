@@ -1,30 +1,16 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>it.pizzastore</groupId>
-  <artifactId>PizzaStore</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
-  <name>PizzaStoreRest</name>
-  
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>it.pizzastore</groupId>
+	<artifactId>PizzaStore</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+
 	<dependencies>
-		<!-- JSTL e altre ribreria da PizzaStore -->
-		<dependency>
-			<groupId>jstl</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.6.2</version>
-		</dependency>
 		
-		<!--  ############ -->
+	
+	
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-server</artifactId>
@@ -121,14 +107,14 @@
 	</dependencies>
 
 	<properties>
-		<spring.version>5.2.0.RELEASE</spring.version>
+		<spring.version>4.3.4.RELEASE</spring.version>
 		<jersey.version>2.23.2</jersey.version>
-		<spring-data.version>2.2.0.RELEASE</spring-data.version>
+		<spring-data.version>1.10.5.RELEASE</spring-data.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<build>
-		<sourceDirectory>src</sourceDirectory>
+		<sourceDirectory>src/main/java</sourceDirectory>
 		<plugins>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
@@ -147,5 +133,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	
 </project>

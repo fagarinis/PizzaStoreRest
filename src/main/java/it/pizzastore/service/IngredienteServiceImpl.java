@@ -28,7 +28,7 @@ public class IngredienteServiceImpl implements IngredienteService {
 	@Transactional(readOnly = true)
 	@Override
 	public Ingrediente caricaSingolo(Long id) {
-		return ingredienteRepository.findById(id).orElse(null);
+		return ingredienteRepository.findById(id);
 	}
 
 	@Transactional
