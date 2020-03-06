@@ -24,12 +24,15 @@ import it.pizzastore.web.dto.StringUtils;
 
 @Service
 public class PizzaServiceImpl implements PizzaService {
-	
+
 	@PersistenceContext
 	private EntityManager entityManager;
 
 	@Autowired
 	IngredienteRepository ingredienteRepository;
+	
+	@Autowired
+	IngredienteService ingredienteService;
 
 	@Autowired
 	PizzaRepository pizzaRepository;
@@ -39,7 +42,7 @@ public class PizzaServiceImpl implements PizzaService {
 	public List<Pizza> listAll() {
 		return (List<Pizza>) pizzaRepository.findAll();
 	}
-	
+
 	@Transactional(readOnly = true)
 	@Override
 	public List<Pizza> listAllActive() {
@@ -63,6 +66,7 @@ public class PizzaServiceImpl implements PizzaService {
 	@Transactional
 	@Override
 	public void inserisciNuovo(Pizza o) {
+		o.setAttivo(true);
 		pizzaRepository.save(o);
 	}
 
@@ -89,18 +93,18 @@ public class PizzaServiceImpl implements PizzaService {
 	@Transactional
 	@Override
 	public void aggiornaConIngredienti(Pizza pizzaInstance) {
+
+		List<Long> idIngredienti = new ArrayList<>();
 		
-//		List<Long> idIngredienti = new ArrayList<>();
-//		
-//		for (Ingrediente ingrediente : pizzaInstance.getIngredienti()) {
-//			idIngredienti.add(ingrediente.getId());
-//		}
-//
-//		List<Ingrediente> ingredientiPersistList = (List<Ingrediente>) ingredienteRepository.findAllById(idIngredienti);
-//		Set<Ingrediente> ingredientiPersist = ingredientiPersistList.stream().collect(Collectors.toSet());
-//		
-//		pizzaInstance.setIngredienti(ingredientiPersist);
-//		this.aggiorna(pizzaInstance);
+		for (Ingrediente ingrediente : pizzaInstance.getIngredienti()) {
+			idIngredienti.add(ingrediente.getId());
+		}
+
+		List<Ingrediente> ingredientiPersistList = (List<Ingrediente>) ingredienteService.findAllByListOfId(idIngredienti);
+		Set<Ingrediente> ingredientiPersist = ingredientiPersistList.stream().collect(Collectors.toSet());
+		
+		pizzaInstance.setIngredienti(ingredientiPersist);
+		this.aggiorna(pizzaInstance);
 
 	}
 
@@ -121,7 +125,7 @@ public class PizzaServiceImpl implements PizzaService {
 	public List<Pizza> listAllActiveEager() {
 		return pizzaRepository.findAllActiveEager();
 	}
-	
+
 	@Transactional
 	@Override
 	public void disattiva(Pizza pizza) {
@@ -130,7 +134,7 @@ public class PizzaServiceImpl implements PizzaService {
 			pizzaDaDisattivare.setAttivo(false);
 		}
 	}
-	
+
 	@Transactional(readOnly = true)
 	@Override
 	public List<Pizza> cercaByDescrizioneLike(String term) {
@@ -143,8 +147,7 @@ public class PizzaServiceImpl implements PizzaService {
 	@Transactional(readOnly = true)
 	@Override
 	public List<Pizza> findByExampleConIdIngredienti(Pizza example) {
-		String query = "select distinct p from Pizza p left join p.ingredienti i "
-				+ " where p.id = p.id "
+		String query = "select distinct p from Pizza p left join p.ingredienti i " + " where p.id = p.id "
 				+ " and p.attivo = 1 ";
 
 		if (StringUtils.isNotBlank(example.getCodice()))
@@ -152,10 +155,26 @@ public class PizzaServiceImpl implements PizzaService {
 		if (StringUtils.isNotBlank(example.getDescrizione()))
 			query += " and p.descrizione like '%" + example.getDescrizione() + "%' ";
 		if (example.getPrezzoBase() != null)
-			query += " and p.prezzoBase = "+ example.getPrezzoBase() +" ";
-		for(Ingrediente ingrediente: example.getIngredienti()) {
-			query += " and i.id = "+ ingrediente.getId(); 
+			query += " and p.prezzoBase = " + example.getPrezzoBase() + " ";
+		for (Ingrediente ingrediente : example.getIngredienti()) {
+			query += " and i.id = " + ingrediente.getId();
 		}
+
+		return entityManager.createQuery(query, Pizza.class).getResultList();
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public List<Pizza> findByExampleEager(Pizza example) {
+		String query = "select distinct p from Pizza p left join fetch p.ingredienti i " + " where p.id = p.id "
+				+ " and p.attivo = 1 ";
+
+		if (StringUtils.isNotBlank(example.getCodice()))
+			query += " and p.codice like '%" + example.getCodice() + "%' ";
+		if (StringUtils.isNotBlank(example.getDescrizione()))
+			query += " and p.descrizione like '%" + example.getDescrizione() + "%' ";
+		if (example.getPrezzoBase() != null)
+			query += " and p.prezzoBase = " + example.getPrezzoBase() + " ";
 
 		return entityManager.createQuery(query, Pizza.class).getResultList();
 	}

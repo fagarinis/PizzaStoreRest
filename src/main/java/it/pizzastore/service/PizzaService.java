@@ -23,4 +23,6 @@ public interface PizzaService extends IBaseService<Pizza> {
 
 	public List<Pizza> listAllActive();
 
+	public List<Pizza> findByExampleEager(Pizza example);
+
 }

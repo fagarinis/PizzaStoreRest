@@ -1,7 +1,10 @@
 package it.pizzastore.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -18,6 +21,9 @@ public class IngredienteServiceImpl implements IngredienteService {
 	
 	@Autowired
 	IngredienteRepository ingredienteRepository;
+	
+	@Autowired
+	EntityManager entityManager;
 
 	@Transactional(readOnly = true)
 	@Override
@@ -61,6 +67,20 @@ public class IngredienteServiceImpl implements IngredienteService {
 	@Override
 	public Set<Ingrediente> cercaIngredientiDaIdPizza(Long idPizza) {
 		return ingredienteRepository.findByIdPizza(idPizza);
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public List<Ingrediente> findAllByListOfId(List<Long> idIngredienti) {
+		List<Ingrediente> result = new ArrayList<>();
+		
+		String query = "select i from Ingrediente i where 1=0 ";
+
+		for(Long id : idIngredienti)
+			query += " OR i.id =" + id + " ";
+
+		result = entityManager.createQuery(query, Ingrediente.class).getResultList();
+		return result;
 	}
 
 }

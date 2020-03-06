@@ -70,6 +70,16 @@ public class IngredienteDTOSearch {
 		}
 		return result;
 	}
+	
+	public static List<Ingrediente> buildListIngredientiModelFromDTO(List<IngredienteDTOSearch> listIngredientiDTO){
+		List<Ingrediente> result = new ArrayList<>();
+		
+		for (IngredienteDTOSearch ingredienteItemDTO : listIngredientiDTO) {
+			Ingrediente o = buildIngredienteModelFromDTO(ingredienteItemDTO);
+			result.add(o);
+		}
+		return result;
+	}
 
 	public static IngredienteDTOSearch buildIngredienteDTOFromModel(Ingrediente source) {
 		IngredienteDTOSearch result = new IngredienteDTOSearch();
