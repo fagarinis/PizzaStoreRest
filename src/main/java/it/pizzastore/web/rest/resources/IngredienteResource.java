@@ -1,8 +1,8 @@
 package it.pizzastore.web.rest.resources;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import it.pizzastore.model.Ingrediente;
 import it.pizzastore.service.IngredienteService;
 import it.pizzastore.web.dto.IngredienteDTO;
+import it.pizzastore.web.dto.IngredienteDTOSearch;
 
 @Component
 @Path("/ingredients")
@@ -28,17 +29,19 @@ public class IngredienteResource {
 	IngredienteService ingredienteService;
 
 //		 ## Ingredienti
-//		 - GET /ingredients?filtriDiRicerca [pizzaiolo]	//TODO
+//		 - GET /ingredients?filtriDiRicerca [pizzaiolo]
 //		 - GET /ingredients/{id} [pizzaiolo]
 //		 - POST /ingredients [pizzaiolo]
 //		 - PUT /ingredients/{id} [pizzaiolo] 
 //		 - DELETE /ingredients/{id} [pizzaiolo]	
 
-	// aggiungere filtri di ricerca
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response listAll() {
-		List<IngredienteDTO> result = IngredienteDTO.buildListIngredientiDTOFromModel(ingredienteService.listAll());
+	public Response findAllIngredientiByExample(@BeanParam IngredienteDTOSearch ingredienteDTOSearch) {
+		Ingrediente example = IngredienteDTOSearch.buildIngredienteModelFromDTO(ingredienteDTOSearch);
+
+		List<IngredienteDTOSearch> result = IngredienteDTOSearch
+				.buildListIngredientiDTOFromModel(ingredienteService.findByExample(example));
 		return Response.status(200).entity(result).build();
 	}
 
