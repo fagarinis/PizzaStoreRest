@@ -16,7 +16,7 @@ public interface OrdineRepository extends CrudRepository<Ordine, Long>, QueryByE
 	@Query("Select o from Ordine o ORDER BY data")
 	List<Ordine> findAllOrderByData();
 
-	@Query("Select o from Ordine o join fetch o.pizze join fetch o.utente join fetch o.cliente where o.id =?1")
+	@Query("Select o from Ordine o left join fetch o.pizze p left join fetch o.utente left join fetch o.cliente where o.id =?1")
 	Ordine findByIdEager(Long id);
 
 	@Query("select o from Ordine o join fetch o.utente u where o.closed = 0 and u.id =?1 ORDER BY o.data")

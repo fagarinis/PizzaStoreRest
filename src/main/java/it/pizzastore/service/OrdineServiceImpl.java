@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.pizzastore.model.Ordine;
+import it.pizzastore.model.Pizza;
 import it.pizzastore.model.utils.IntegerUtils;
 import it.pizzastore.repository.OrdineRepository;
 import it.pizzastore.web.dto.StringUtils;
@@ -66,6 +67,20 @@ public class OrdineServiceImpl implements OrdineService {
 		// il save non funzionava per via del fatto che un
 		// ordine può avere più pizze dello stesso tipo
 	}
+	
+	@Transactional
+	@Override
+	public Ordine aggiornaOrdine(Ordine o) {
+		Ordine ordinePersist = this.caricaSingolo(o.getId());
+		ordinePersist.setCodice(o.getCodice());
+		ordinePersist.setPizze(o.getPizze());
+		ordinePersist.setUtente(o.getUtente());
+		ordinePersist.setCliente(o.getCliente());
+		// setto il prezzo dopo aver aggiornato le pizze
+		ordinePersist.setCostoTotale(calcolaPrezzoOrdine(ordinePersist));
+
+		return ordinePersist;
+	}
 
 	@Transactional
 	@Override
@@ -75,6 +90,13 @@ public class OrdineServiceImpl implements OrdineService {
 		ordineRepository.save(o);
 		// setto il prezzo dopo aver settato le pizze
 		o.setCostoTotale(calcolaPrezzoOrdine(o));
+	}
+	
+	@Transactional
+	@Override
+	public Ordine inserisciNuovoOrdine(Ordine o) {
+		inserisciNuovo(o);
+		return this.caricaSingoloEager(o.getId());
 	}
 
 	/**
@@ -103,7 +125,7 @@ public class OrdineServiceImpl implements OrdineService {
 	@Transactional(readOnly = true)
 	@Override
 	public List<Ordine> findByExampleOrderByData(Ordine example) {
-		String query = "select o from Ordine o where o.id = o.id ";
+		String query = "select distinct o from Ordine o where o.id = o.id ";
 
 		if (StringUtils.isNotBlank(example.getCodice()))
 			query += " and o.codice like '%" + example.getCodice() + "%' ";
@@ -128,19 +150,56 @@ public class OrdineServiceImpl implements OrdineService {
 
 	@Transactional(readOnly = true)
 	@Override
+	public List<Ordine> findByExampleEagerOrderByData(Ordine example) {
+		String query = "select distinct o from Ordine o left join fetch o.pizze p left join fetch o.utente u left join fetch o.cliente c where o.id = o.id ";
+
+		if (StringUtils.isNotBlank(example.getCodice()))
+			query += " and o.codice like '%" + example.getCodice() + "%' ";
+		if (example.getCostoTotale() != null) {
+			if (IntegerUtils.isIntegerValue(example.getCostoTotale())) {
+				query += " and floor(o.costoTotale) =" + example.getCostoTotale() + " ";
+			} else {
+				query += " and o.costoTotale =" + example.getCostoTotale() + " ";
+			}
+		}
+		if (example.getSimpleData() != null)
+			query += " and o.data like '%" + example.getSimpleData() + "%' ";
+		if (example.isClosed() != null) {
+			int b = example.isClosed() ? 1 : 0;
+			query += " and o.closed = " + b + " ";
+		}
+		if (example.getCliente() != null && example.getCliente().getId() != null) {
+			query += " and c.id =" + example.getCliente().getId() + " ";
+		}
+		if (example.getUtente() != null && example.getUtente().getId() != null) {
+			query += " and u.id =" + example.getUtente().getId() + " ";
+		}
+		for (Pizza pizza : example.getPizze()) {
+			query += " and p.id = " + pizza.getId()+" ";
+		}
+
+		query += "ORDER BY o.data";
+
+		return entityManager.createQuery(query, Ordine.class).getResultList();
+	}
+
+	@Transactional(readOnly = true)
+	@Override
 	public List<Ordine> listAllOrdiniAttiviUtenteOrdinaPerData(Long fattorinoId) {
 		return ordineRepository.listAllActiveOrderOfUserOrderByDate(fattorinoId);
 	}
 
 	@Transactional
 	@Override
-	public void chiudiOrdine(Long idOrdine) {
+	public Ordine chiudiOrdine(Long idOrdine) {
 		Ordine ordine = this.caricaSingolo(idOrdine);
 		if (!ordine.isClosed()) {
 			ordine.setClosed(true);
 		}
+		return ordine;
 	}
 
+	@Transactional
 	@Override
 	public List<Ordine> cercaDaDataEIdPizzaEIdCliente(String simpleData, Long idPizza, Long idCliente) {
 		String query = "select distinct o from Ordine o left join o.pizze p left join o.cliente c where 1 = 1 ";

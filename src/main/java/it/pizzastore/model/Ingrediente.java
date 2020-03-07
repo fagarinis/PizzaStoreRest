@@ -34,7 +34,10 @@ public class Ingrediente {
 	public Ingrediente(String descrizione, String codice, String prezzo) {
 		this.descrizione = descrizione;
 		this.codice = codice;
-		this.setPrezzo(prezzo);
+		try {
+			this.setPrezzo(new BigDecimal(prezzo));
+		} catch (Exception e) {
+		}
 	}
 
 	public Long getId() {
@@ -61,12 +64,12 @@ public class Ingrediente {
 		this.prezzo = prezzo;
 	}
 
-	public void setPrezzo(String prezzoInput) {
-		try {
-			this.setPrezzo(new BigDecimal(prezzoInput));
-		} catch (Exception e) {
-		}
-	}
+//	public void setPrezzo(String prezzoInput) {
+//		try {
+//			this.setPrezzo(new BigDecimal(prezzoInput));
+//		} catch (Exception e) {
+//		}
+//	}
 
 	public String getCodice() {
 		return codice;

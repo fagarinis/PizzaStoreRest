@@ -19,7 +19,7 @@ public class PizzaDTO {
 	@QueryParam(value = "prezzoBase")
 	private BigDecimal prezzoBase;
 	private boolean attivo;
-	
+
 	private List<IngredienteDTOSearch> ingredienti = new ArrayList<>();
 
 	public Long getId() {
@@ -97,7 +97,7 @@ public class PizzaDTO {
 
 	public static List<PizzaDTO> buildDTOListFromModelList(List<Pizza> input, boolean includeIngredienti) {
 		List<PizzaDTO> result = new ArrayList<>();
-		for(Pizza pizzaItem : input) {
+		for (Pizza pizzaItem : input) {
 			PizzaDTO pizzaDTOtemp = buildPizzaDTOFromModel(pizzaItem, includeIngredienti);
 			result.add(pizzaDTOtemp);
 		}
@@ -110,6 +110,18 @@ public class PizzaDTO {
 
 	public void setAttivo(boolean attivo) {
 		this.attivo = attivo;
+	}
+
+	public static List<Pizza> buildModelListFromDTOList(List<PizzaDTO> input, boolean includeIngredienti) {
+		List<Pizza> result = new ArrayList<>();
+		if(input == null) {
+			return result;
+		}
+		for (PizzaDTO pizzaDTOItem : input) {
+			Pizza pizzaTemp = buildPizzaModelFromDTO(pizzaDTOItem, includeIngredienti);
+			result.add(pizzaTemp);
+		}
+		return result;
 	}
 
 }

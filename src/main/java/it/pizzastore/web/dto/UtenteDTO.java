@@ -88,6 +88,9 @@ public class UtenteDTO {
 	}
 
 	public static Utente buildUtenteModelFromDTO(UtenteDTO source, boolean includeRuoli) {
+		if(source == null) {
+			return null;
+		}
 		Utente result = new Utente();
 		result.setId(source.getId());
 		result.setNome(source.getNome());
@@ -107,6 +110,7 @@ public class UtenteDTO {
 		if(source == null) {
 			return null;
 		}
+		
 		UtenteDTO result = new UtenteDTO();
 		result.setId(source.getId());
 		result.setNome(source.getNome());
