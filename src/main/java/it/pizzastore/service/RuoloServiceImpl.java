@@ -47,7 +47,6 @@ public class RuoloServiceImpl implements RuoloService {
 
 	@Override
 	public List<Ruolo> findByExample(Ruolo example) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

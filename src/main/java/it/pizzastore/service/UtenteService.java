@@ -15,6 +15,16 @@ public interface UtenteService extends IBaseService<Utente> {
 	
 	public Utente cercaDaUsername(String username);
 
-	List<Utente> cercaUtentiByCodiceRuoloAndCognomeLike(CodiceRuolo codiceRuolo, String cognome);
+	public List<Utente> cercaUtentiByCodiceRuoloAndCognomeLike(CodiceRuolo codiceRuolo, String cognome);
+
+	public List<Utente> findByExampleEager(Utente example);
+
+	public Utente aggiornaUtenteConRuoli(Utente utenteInstance);
+
+	public boolean isUsernameDisponibile(String username);
+
+	public Utente registraUtente(Utente utenteInstance);
+	
+	public Utente attivaUtenteDaId(Long id);
 
 }

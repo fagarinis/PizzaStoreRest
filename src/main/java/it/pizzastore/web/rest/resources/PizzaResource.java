@@ -77,7 +77,6 @@ public class PizzaResource {
 	public Response updatePizza(@PathParam("id") Long id, PizzaDTO pizzaDTOInput) {
 		pizzaDTOInput.setId(id);
 		Pizza pizzaDaModificare = PizzaDTO.buildPizzaModelFromDTO(pizzaDTOInput, true);
-		System.out.println(pizzaDaModificare);
 		pizzaService.aggiornaConIngredienti(pizzaDaModificare);
 		PizzaDTO pizzaModificata = PizzaDTO.buildPizzaDTOFromModel(pizzaDaModificare, true);
 		pizzaModificata.setIngredienti(IngredienteDTOSearch.buildListIngredientiDTOFromModel(new ArrayList<>(ingredienteService.cercaIngredientiDaIdPizza(pizzaDaModificare.getId()))));

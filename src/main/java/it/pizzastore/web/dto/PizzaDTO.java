@@ -2,15 +2,12 @@ package it.pizzastore.web.dto;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.ws.rs.QueryParam;
 
 import it.pizzastore.model.Ingrediente;
 import it.pizzastore.model.Pizza;
-import jersey.repackaged.com.google.common.collect.Lists;
 
 public class PizzaDTO {
 
