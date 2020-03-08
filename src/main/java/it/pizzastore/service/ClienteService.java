@@ -14,4 +14,6 @@ public interface ClienteService extends IBaseService<Cliente> {
 
 	public List<Cliente> cercaByNomeCompletoLike(String term);
 
+	public Cliente caricaSingoloUtenteAttivo(Long id);
+
 }

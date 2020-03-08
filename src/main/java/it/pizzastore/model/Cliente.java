@@ -107,4 +107,10 @@ public class Cliente {
 		this.ordini = ordini;
 	}
 
+	@Override
+	public String toString() {
+		return "Cliente [id=" + id + ", nome=" + nome + ", cognome=" + cognome + ", via=" + via + ", citta=" + citta
+				+ ", civico=" + civico + ", telefono=" + telefono + ", attivo=" + attivo + "]";
+	}
+
 }

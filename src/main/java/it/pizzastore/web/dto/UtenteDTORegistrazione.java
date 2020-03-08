@@ -57,4 +57,13 @@ public class UtenteDTORegistrazione {
 		return result;
 	}
 
+	public static UtenteDTORegistrazione buildUtenteDTOFromModel(Utente source) {
+		UtenteDTORegistrazione result = new UtenteDTORegistrazione();
+		result.setNome(source.getNome());
+		result.setCognome(source.getCognome());
+		result.setUsername(source.getUsername());
+		result.setPassword(source.getPassword());
+		return result;
+	}
+
 }

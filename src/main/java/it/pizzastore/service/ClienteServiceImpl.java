@@ -17,7 +17,7 @@ import it.pizzastore.repository.ClienteRepository;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
-	
+
 	@PersistenceContext
 	private EntityManager entityManager;
 
@@ -42,6 +42,18 @@ public class ClienteServiceImpl implements ClienteService {
 	@Override
 	public Cliente caricaSingolo(Long id) {
 		return clienteRepository.findById(id);
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public Cliente caricaSingoloUtenteAttivo(Long id) {
+		Cliente result = caricaSingolo(id);
+
+		if (result.isAttivo()) {
+			return result;
+		}
+		return null;
+
 	}
 
 	@Transactional
@@ -87,25 +99,21 @@ public class ClienteServiceImpl implements ClienteService {
 		example.setAttivo(true);
 		return this.findByExample(example);
 	}
-	
+
 	@Transactional(readOnly = true)
 	@Override
-	public List<Cliente> cercaByNomeCompletoLike(String term){
-		String query = ""
-				+ "SELECT " + 
-				"    x.id as id, x.nome as nome, x.cognome as cognome, x.via as via, x.civico as civico, x.citta as citta, x.telefono as telefono, x.attivo " + 
-				"FROM " + 
-				"    (SELECT " + 
-				"        c.id, c.nome, c.cognome, c.via, c.civico, c.citta, c.telefono, c.attivo,CONCAT(c.nome, ' ', c.cognome) AS NomeCompleto " + 
-				"    FROM " + 
-				"        cliente c) AS x " + 
-				"WHERE " + 
-				"    NomeCompleto LIKE '%"+term+"%' and x.attivo = 1";
-		
+	public List<Cliente> cercaByNomeCompletoLike(String term) {
+		String query = "" + "SELECT "
+				+ "    x.id as id, x.nome as nome, x.cognome as cognome, x.via as via, x.civico as civico, x.citta as citta, x.telefono as telefono, x.attivo "
+				+ "FROM " + "    (SELECT "
+				+ "        c.id, c.nome, c.cognome, c.via, c.civico, c.citta, c.telefono, c.attivo,CONCAT(c.nome, ' ', c.cognome) AS NomeCompleto "
+				+ "    FROM " + "        cliente c) AS x " + "WHERE " + "    NomeCompleto LIKE '%" + term
+				+ "%' and x.attivo = 1";
+
 		@SuppressWarnings("unchecked")
 		List<Cliente> result = entityManager.createNativeQuery(query, Cliente.class).getResultList();
-		
-		return result ;
+
+		return result;
 	}
 
 }
