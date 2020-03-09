@@ -38,7 +38,6 @@ public class OrdineResource {
 	public Response findAllOrdiniByExample(@BeanParam OrdineDTO ordineDTO) {
 		final boolean includePizze = true;
 		Ordine example = OrdineDTO.buildOrdineModelFromDTO(ordineDTO, includePizze);
-		System.out.println(example.getData());
 		List<Ordine> result = ordineService.findByExampleEagerOrderByData(example);
 		List<OrdineDTO> resultDTO = OrdineDTO.buildDTOListFromModelList(result, includePizze);
 

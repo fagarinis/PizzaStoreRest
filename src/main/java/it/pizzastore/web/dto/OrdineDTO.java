@@ -2,6 +2,7 @@ package it.pizzastore.web.dto;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +33,9 @@ public class OrdineDTO {
 
 	@JsonIgnoreProperties(value = { "ingredienti" })
 	private List<PizzaDTO> pizze = new ArrayList<>();
+	
+	@QueryParam(value = "pizze")
+	private String[] pizzeIdArray;
 
 	@JsonIgnoreProperties(value = { "ruoli" })
 	private UtenteDTO utente;
@@ -166,7 +170,7 @@ public class OrdineDTO {
 	@Override
 	public String toString() {
 		return "OrdineDTO [id=" + id + ", data=" + data + ", closed=" + closed + ", codice=" + codice + ", costoTotale="
-				+ costoTotale + ", pizze=" + pizze + ", utente=" + utente + ", cliente=" + cliente + "]";
+				+ costoTotale + ", pizze=" + pizze +" pizzeId="+Arrays.asList(pizzeIdArray)+ ", utente=" + utente + ", cliente=" + cliente + "]";
 	}
 
 	public String getDataString() {

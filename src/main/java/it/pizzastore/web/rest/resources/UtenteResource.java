@@ -57,7 +57,6 @@ public class UtenteResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response findAllUtentiByExample(@BeanParam UtenteDTO utenteDTO) {
-		System.out.println(utenteDTO);
 		boolean includeRuoli = true;
 		Utente example = UtenteDTO.buildUtenteModelFromDTO(utenteDTO, includeRuoli);
 
