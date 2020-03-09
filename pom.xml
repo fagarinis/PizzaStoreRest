@@ -106,7 +106,7 @@
 	<properties>
 		<spring.version>4.3.4.RELEASE</spring.version>
 		<jersey.version>2.23.2</jersey.version>
-		<spring-data.version>1.10.5.RELEASE</spring-data.version>
+		<spring-data.version>1.11.23.RELEASE</spring-data.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
