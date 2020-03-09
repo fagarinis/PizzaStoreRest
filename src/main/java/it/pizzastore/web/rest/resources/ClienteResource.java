@@ -17,11 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import it.pizzastore.model.Cliente;
-import it.pizzastore.model.Ingrediente;
 import it.pizzastore.service.ClienteService;
 import it.pizzastore.web.dto.ClienteDTO;
-import it.pizzastore.web.dto.IngredienteDTO;
-import it.pizzastore.web.dto.IngredienteDTOSearch;
 
 @Component
 @Path("/clients")

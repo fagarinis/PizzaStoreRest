@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import it.pizzastore.model.Ruolo;
 import it.pizzastore.model.StatoUtente;
 import it.pizzastore.model.Utente;
+import it.pizzastore.model.utils.DateUtils;
 
+@JsonIgnoreProperties(value = { "dataRegistrazione"})
 public class UtenteDTO {
 
 	private Long id;
@@ -23,10 +25,13 @@ public class UtenteDTO {
 	private String cognome;
 	@QueryParam(value = "username")
 	private String username;
-	@QueryParam(value = "dataRegistrazione")
+	
 	private Date dataRegistrazione;
 	@QueryParam(value = "stato")
 	private StatoUtente stato;
+
+	@QueryParam(value = "dataRegistrazione")
+	private String data_registrazione;
 
 	@JsonIgnoreProperties(value = { "utenti" })
 	private Set<Ruolo> ruoli = new HashSet<>();
@@ -64,11 +69,16 @@ public class UtenteDTO {
 	}
 
 	public Date getDataRegistrazione() {
+		if(dataRegistrazione == null) {
+			return DateUtils.convertSimpleDateStringToDate(data_registrazione);
+		}
 		return dataRegistrazione;
 	}
 
 	public void setDataRegistrazione(Date dataRegistrazione) {
 		this.dataRegistrazione = dataRegistrazione;
+		this.data_registrazione = (DateUtils.convertDateToSimpleDateString(dataRegistrazione));
+
 	}
 
 	public StatoUtente getStato() {
@@ -88,7 +98,7 @@ public class UtenteDTO {
 	}
 
 	public static Utente buildUtenteModelFromDTO(UtenteDTO source, boolean includeRuoli) {
-		if(source == null) {
+		if (source == null) {
 			return null;
 		}
 		Utente result = new Utente();
@@ -106,11 +116,11 @@ public class UtenteDTO {
 	}
 
 	public static UtenteDTO buildUtenteDTOFromModel(Utente source, boolean includeRuoli) {
-		
-		if(source == null) {
+
+		if (source == null) {
 			return null;
 		}
-		
+
 		UtenteDTO result = new UtenteDTO();
 		result.setId(source.getId());
 		result.setNome(source.getNome());
@@ -127,12 +137,28 @@ public class UtenteDTO {
 
 	public static List<UtenteDTO> buildDTOListFromModelList(List<Utente> input, boolean includeRuoli) {
 		List<UtenteDTO> result = new ArrayList<>();
-		
+
 		for (Utente utenteItem : input) {
 			UtenteDTO utenteDTOtemp = buildUtenteDTOFromModel(utenteItem, includeRuoli);
 			result.add(utenteDTOtemp);
 		}
 		return result;
 	}
+
+	@Override
+	public String toString() {
+		return "UtenteDTO [id=" + id + ", nome=" + nome + ", cognome=" + cognome + ", username=" + username
+				+ ", dataRegistrazione=" + dataRegistrazione +"dataString="+ data_registrazione +", stato=" + stato + ", ruoli=" + ruoli + "]";
+	}
+
+	public String getData_registrazione() {
+		return data_registrazione;
+	}
+
+	public void setData_registrazione(String data_registrazione) {
+		this.data_registrazione = data_registrazione;
+	}
+	
+	
 
 }

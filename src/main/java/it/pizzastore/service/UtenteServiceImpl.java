@@ -19,6 +19,7 @@ import it.pizzastore.model.CodiceRuolo;
 import it.pizzastore.model.Ruolo;
 import it.pizzastore.model.StatoUtente;
 import it.pizzastore.model.Utente;
+import it.pizzastore.model.utils.DateUtils;
 import it.pizzastore.repository.UtenteRepository;
 import it.pizzastore.web.dto.StringUtils;
 
@@ -123,6 +124,8 @@ public class UtenteServiceImpl implements UtenteService {
 			query += " and u.cognome like '%" + example.getCognome() + "%' ";
 		if (StringUtils.isNotBlank(example.getUsername()))
 			query += " and u.username like '%" + example.getUsername() + "%' ";
+		if (example.getDataRegistrazione() != null)
+			query += " and u.dataRegistrazione ='" + DateUtils.convertDateToSqlDateString(example.getDataRegistrazione()) + "' ";
 		if (example.getStato() != null)
 			query += "and u.stato = '" + example.getStato() + "' ";
 		result = entityManager.createQuery(query, Utente.class).getResultList();

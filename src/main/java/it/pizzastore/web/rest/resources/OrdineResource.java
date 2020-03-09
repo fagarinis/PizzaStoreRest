@@ -22,7 +22,6 @@ import it.pizzastore.web.dto.OrdineDTO;
 @Component
 @Path("/orders")
 public class OrdineResource {
-	//FIXME la data in output nelle response (su postman) si vede sempre i nanosecondi
 
 	@Autowired
 	OrdineService ordineService;
@@ -38,9 +37,8 @@ public class OrdineResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response findAllOrdiniByExample(@BeanParam OrdineDTO ordineDTO) {
 		final boolean includePizze = true;
-		// FIXME ricerca per data: l'input non funziona
 		Ordine example = OrdineDTO.buildOrdineModelFromDTO(ordineDTO, includePizze);
-
+		System.out.println(example.getData());
 		List<Ordine> result = ordineService.findByExampleEagerOrderByData(example);
 		List<OrdineDTO> resultDTO = OrdineDTO.buildDTOListFromModelList(result, includePizze);
 

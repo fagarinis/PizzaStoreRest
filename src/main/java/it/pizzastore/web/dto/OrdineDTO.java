@@ -11,12 +11,18 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import it.pizzastore.model.Cliente;
 import it.pizzastore.model.Ordine;
+import it.pizzastore.model.utils.DateUtils;
 
+@JsonIgnoreProperties(value = { "data"})
 public class OrdineDTO {
 
 	private Long id;
-	@QueryParam(value = "data")
+	
 	private Date data;
+	
+	@QueryParam(value = "data")
+	private String dataString;
+	
 	@QueryParam(value = "closed")
 	private Boolean closed;
 	@QueryParam(value = "codice")
@@ -92,11 +98,21 @@ public class OrdineDTO {
 	}
 
 	public Date getData() {
+		Date result = null;
+		if(data == null) {
+			if(result == null)
+				result = DateUtils.ConvertFullCETStringToDate(dataString);
+			if(result == null)
+				result = DateUtils.convertSimpleDateStringToDate(dataString);
+			
+			return result;
+		}
 		return data;
 	}
 
 	public void setData(Date data) {
 		this.data = data;
+		this.dataString = DateUtils.convertDateToFullCETDateString(data);
 	}
 
 	public Boolean getClosed() {
@@ -151,6 +167,14 @@ public class OrdineDTO {
 	public String toString() {
 		return "OrdineDTO [id=" + id + ", data=" + data + ", closed=" + closed + ", codice=" + codice + ", costoTotale="
 				+ costoTotale + ", pizze=" + pizze + ", utente=" + utente + ", cliente=" + cliente + "]";
+	}
+
+	public String getDataString() {
+		return dataString;
+	}
+
+	public void setDataString(String dataString) {
+		this.dataString = dataString;
 	}
 	
 	

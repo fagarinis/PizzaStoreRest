@@ -41,8 +41,6 @@ public class UtenteResource {
 		Utente utenteDaRegistrare = UtenteDTORegistrazione.buildUtenteModelFromDTO(utenteDTORegistrazione);
 		Utente utenteRegistrato = utenteService.registraUtente(utenteDaRegistrare);
 		UtenteDTO utenteRegistratoDTO = UtenteDTO.buildUtenteDTOFromModel(utenteRegistrato, false);
-
-		// FIXME per qualche motivo la data viene presentata in nanosecondi su Postman
 		return Response.status(200).entity(utenteRegistratoDTO).build();
 	}
 
@@ -59,8 +57,7 @@ public class UtenteResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response findAllUtentiByExample(@BeanParam UtenteDTO utenteDTO) {
-		// FIXME cercare per data non funziona, convertire il formato dell'utenteDTO nel
-		// formato su sql
+		System.out.println(utenteDTO);
 		boolean includeRuoli = true;
 		Utente example = UtenteDTO.buildUtenteModelFromDTO(utenteDTO, includeRuoli);
 
